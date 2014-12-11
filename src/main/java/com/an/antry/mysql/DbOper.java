@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -18,12 +17,66 @@ public class DbOper {
     private String username = "root";
     private String password = "root";
     private Connection conn = null;
+    private String filePath1 = "D:\\data\\ipgeo_%s.txt";
+    private String filePath2 = "/home/hadoop/adong/ipgeo/ipgeo_%s.txt";
 
     public DbOper() {
         try {
             init();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void createFile() throws SQLException, IOException {
+        Statement st = null;
+        try {
+            st = conn.createStatement();
+            long t1 = System.currentTimeMillis();
+            String sql = String.format("select startIpNum, endIpNum, latitude, longitude from blockslocation;");
+            ResultSet rs = st.executeQuery(sql);
+            long i = 0L;
+            long num = 10000000L;
+            int cnt = 359;
+            StringBuilder content = new StringBuilder();
+            long finished = 3753599926L;
+            while (rs.next()) {
+                long start = rs.getLong("startIpNum");
+                long end = rs.getLong("endIpNum");
+                double lat = rs.getDouble("latitude");
+                double lng = rs.getDouble("longitude");
+                for (long ipl = start; ipl <= end; ipl++) {
+                    if (ipl <= finished) {
+                        continue;
+                    }
+                    i++;
+                    content.append(ipl).append(",").append(lat).append(",").append(lng).append("\n");
+                    if (i >= num) {
+                        File ff = new File(String.format(filePath2, ++cnt));
+                        long t2 = System.currentTimeMillis();
+                        System.out.println("Time " + (t2 - t1) + " ms.");
+                        t1 = t2;
+                        writeFile(ff.toString(), content.toString());
+                        System.out.println((System.currentTimeMillis() - t2) + " ms, finished write " + ff.toString());
+                        content.setLength(0);
+
+                        try {
+                            System.out.println("Sleep 2s.");
+                            long t11 = System.currentTimeMillis();
+                            Thread.sleep(5 * 1000L);
+                            System.out.println(System.currentTimeMillis() - t11);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        i = 0;
+                    }
+                }
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        } finally {
+            st.close();
         }
     }
 

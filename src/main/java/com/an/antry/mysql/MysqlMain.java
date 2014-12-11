@@ -5,17 +5,16 @@ import java.sql.SQLException;
 
 public class MysqlMain {
     public static void main(String[] args) {
+        DbOper oper = null;
         try {
-            run();
+            oper = new DbOper();
+            // oper.testInit();
+            // oper.query();
+            oper.createFile();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
+        } finally {
+            oper.closeConn();
         }
-    }
-
-    private static void run() throws SQLException, IOException {
-        DbOper oper = new DbOper();
-        // oper.testInit();
-        oper.query();
-        oper.closeConn();
     }
 }
