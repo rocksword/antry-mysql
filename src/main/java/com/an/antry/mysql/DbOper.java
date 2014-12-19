@@ -28,6 +28,30 @@ public class DbOper {
         }
     }
 
+    public void createFile2() throws SQLException, IOException {
+        Statement st = null;
+        try {
+            st = conn.createStatement();
+            String sql = String.format("select startIpNum, endIpNum, latitude, longitude from blockslocation;");
+            ResultSet rs = st.executeQuery(sql);
+            StringBuilder content = new StringBuilder();
+            while (rs.next()) {
+                long start = rs.getLong("startIpNum");
+                long end = rs.getLong("endIpNum");
+                double lat = rs.getDouble("latitude");
+                double lng = rs.getDouble("longitude");
+                content.append(String.format("%010d", start)).append(",").append(String.format("%010d", end))
+                        .append(",").append(lat).append(",").append(lng).append("\n");
+            }
+            writeFile("/home/hadoop/iploc.csv", content.toString());
+            if (rs != null) {
+                rs.close();
+            }
+        } finally {
+            st.close();
+        }
+    }
+
     public void createFile() throws SQLException, IOException {
         Statement st = null;
         try {

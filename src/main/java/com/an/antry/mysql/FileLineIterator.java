@@ -40,9 +40,9 @@ public class FileLineIterator {
     }
 
     public void close() {
-        System.out.println("Close BufferedReader: " + br);
         if (br != null) {
             try {
+                System.out.println("Close BufferedReader: " + br);
                 br.close();
             } catch (Exception e) {
                 e.printStackTrace();
