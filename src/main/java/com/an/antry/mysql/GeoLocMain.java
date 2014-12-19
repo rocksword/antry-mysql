@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public class GeoLocMain {
-    private static String geoLoc = "D:\\data\\Geo-Location.csv";
     private static String geoBlock = "D:\\data\\GeoIPCity-Blocks.csv";
 
     public static void main(String[] args) throws IOException {
@@ -68,6 +67,7 @@ public class GeoLocMain {
     }
 
     private static void handleLoc() throws IOException {
+        String geoLoc = "D:\\data\\Geo-Location.csv";
         String filepath = "D:\\data\\GeoIPCity-Location.csv";
         FileLineIterator it = new FileLineIterator(filepath);
         String line = null;
