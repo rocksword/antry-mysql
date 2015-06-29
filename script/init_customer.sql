@@ -1,0 +1,29 @@
+/*
+http://www.tech-recipes.com/rx/49959/finding-duplicate-records-using-group-by-in-sql-server/
+*/
+
+CREATE DATABASE IF NOT EXISTS mysql_test;
+USE mysql_test;
+
+DROP TABLE IF EXISTS CUSTOMER;
+CREATE TABLE CUSTOMER
+(
+FirstName VARCHAR(50),
+LastName  VARCHAR(50),
+MobileNo  VARCHAR(15)
+);
+
+INSERT INTO CUSTOMER VALUES ('Niraj','Yadav',989898);
+
+INSERT INTO CUSTOMER VALUES ('Chetan','Gadodia',959595);
+INSERT INTO CUSTOMER VALUES ('Chetan','Gadodia',959595);
+
+INSERT INTO CUSTOMER VALUES ('Atul','Kokam',42424242);
+INSERT INTO CUSTOMER VALUES ('Atul','Kokam',42424242);
+
+INSERT INTO CUSTOMER VALUES ('Vishal','Parte',9394453);
+INSERT INTO CUSTOMER VALUES ('Vishal','Parte',9394453);
+INSERT INTO CUSTOMER VALUES ('Vishal','Parte',9394453);
+
+INSERT INTO CUSTOMER VALUES ('Jinendra','Jain',121212);
+INSERT INTO CUSTOMER VALUES ('Jinendra','Jain',121212);
